@@ -1,4 +1,4 @@
-package com.me.practice.structure;
+package com.me.practice.struc;
 
 import java.util.Random;
 

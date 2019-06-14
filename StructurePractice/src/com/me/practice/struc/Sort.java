@@ -1,14 +1,11 @@
-package com.me.practice.structure;
-
-import java.util.Arrays;
-import java.util.Collections;
+package com.me.practice.struc;
 
 /**
  * .
  *
  * @author zwyin
  */
-public class SortTest {
+public class Sort {
     public static void main(String[] args) {
 //        int[] arr = {1, 5, 2};
         int[] arr = {1, 5, 6, 7, 8, 10, 10, 10, 10, 10, 10};
@@ -222,4 +219,43 @@ public class SortTest {
         System.arraycopy(tmp, 0, arr, 0, arr.length);
     }
 
+    public static void bubbleSord(int[] arr) {
+        for (int i = 0; i < arr.length - 1; i++) {
+            boolean change = false;
+            for (int j = 0; j < arr.length - 1 - i; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    int tmp = arr[j + 1];
+                    arr[j + 1] = arr[j];
+                    arr[j] = tmp;
+                    change = true;
+                }
+            }
+            if (change) {
+                // 如果没有数据交换，直接退出
+                break;
+            }
+        }
+    }
+
+    public static void insertSort(int[] arr) {
+        int length = arr.length;
+        if (length <= 1) {
+            return;
+        }
+
+        for (int i = 1; i < length; i++) {
+            int item = arr[i];
+            int j = i - 1;
+            for (; j >= 0; j--) {
+                if (arr[j] > item) {
+                    //移动数据
+                    arr[j + 1] = arr[j];
+                } else {
+                    break;
+                }
+            }
+            // 将目前值，赋到制定位置
+            arr[j + 1] = item;
+        }
+    }
 }

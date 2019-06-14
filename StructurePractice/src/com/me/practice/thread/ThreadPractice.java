@@ -1,4 +1,4 @@
-package com.me.practice.structure;
+package com.me.practice.thread;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;

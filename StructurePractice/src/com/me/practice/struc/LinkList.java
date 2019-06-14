@@ -1,4 +1,4 @@
-package com.me.practice.structure;
+package com.me.practice.struc;
 
 /**
  * 链表练习.
