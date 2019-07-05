@@ -18,7 +18,10 @@ public class AhoCorasick {
         }
     }
 
-
+    /**
+     * 1. p.fail = q;
+     * 2. 如果q的子节点qc == p的子节点pc；那么pc.fail = qc;如果找不到，那pc.fail = root;
+     */
     public void buildFailurePointer() {
         Queue<AcNode> queue = new LinkedList<>();
         root.fail = null;
@@ -33,7 +36,8 @@ public class AhoCorasick {
                 } else {
                     AcNode q = p.fail;
                     while (q != null) {
-                        AcNode qc = q.children[pc.data - 'a'];
+                        AcNode qc = q.children[pc.data - 'a']; // ？这里的( pc.data - 'a' == i ) 是否成立；因为i表示字符的位置，
+                                                               // pc.data - 'a' 也表示字符的位置
                         if (qc != null) {
                             pc.fail = qc;
                             break;
@@ -57,6 +61,7 @@ public class AhoCorasick {
             if (cur.children[index] == null) {
                 AcNode node = new AcNode(words[i]);
                 cur.children[index] = node;
+                cur.children[index].length = i + 1; // 记录当前节点到根节点的长度
             }
             cur = cur.children[index];
         }
@@ -92,7 +97,7 @@ public class AhoCorasick {
         ahoCorasick.insert("bc");
         ahoCorasick.insert("bcd");
         ahoCorasick.buildFailurePointer();
-        ahoCorasick.match("word".toCharArray());
+        ahoCorasick.match("abcd".toCharArray());
     }
 
 }
