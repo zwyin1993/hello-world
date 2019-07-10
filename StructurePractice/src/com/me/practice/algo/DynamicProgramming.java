@@ -47,12 +47,14 @@ public class DynamicProgramming {
             states[items[0]] = true;
         }
         for (int i = 1; i < n; ++i) { // 动态规划
-//            for (int j = w-items[i]; j >= 0; --j) {// 把第 i 个物品放入背包
-//                if (states[j]==true) states[j+items[i]] = true;
-//            }
-            for (int j = 0; j <= w - items[i]; ++j) {// 把第 i 个物品放入背包
-                if (states[j]) states[j + items[i]] = true;
+            // 这里采用从大到小进行赋值，如果从小到大赋值，会影响后面的判断
+            // 举例：当i==2时，应该赋值的是0， 2， 4；如果从小到大赋值的话，会是0，2,4，6本来应该是i==3之后出现的状态在这里全都出现了，有问题！！！
+            for (int j = w-items[i]; j >= 0; --j) {// 把第 i 个物品放入背包
+                if (states[j]) states[j+items[i]] = true;
             }
+//            for (int j = 0; j <= w - items[i]; ++j) {// 把第 i 个物品放入背包
+//                if (states[j]) states[j + items[i]] = true;
+//            }
         }
         for (int i = w; i >= 0; --i) { // 输出结果
             if (states[i]) return i;
@@ -99,9 +101,8 @@ public class DynamicProgramming {
 
     public static void main(String[] args) {
         DynamicProgramming dd = new DynamicProgramming();
-        int aa = dd.knapsack3(new int[]{2, 2, 4, 6, 3}, new int[]{1, 2, 3, 4, 5}, 5, 16);
-//        int aa = dd.knapsack(new int[]{2, 2, 4, 6, 3}, 5, 16);
+        int aa = dd.knapsack3(new int[]{2, 3, 4, 5, 6}, new int[]{1, 2, 3, 4, 5}, 5, 16);
+//        int aa = dd.knapsack2(new int[]{2, 2, 4, 6, 3}, 5, 16);
         System.out.println(aa);
     }
-
 }
