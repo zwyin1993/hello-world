@@ -64,7 +64,7 @@ public class Graph {
             this.nodes[this.tail] = null;
             --this.tail;
             // 向下堆化
-            int i = 1; // 堆化
+            int i = 1; // 向下堆化
             int minPos = 1;
             while (true) {
                 if (2 * i <= this.tail && this.nodes[minPos].dist > this.nodes[2 * i].dist) {
@@ -87,7 +87,7 @@ public class Graph {
         public void add(Vertex vertex) {
             // 新元素添加在末尾
             this.nodes[++this.tail] = vertex;
-            // 堆化
+            // 向上堆化
             int i = this.tail;
             while (i / 2 > 0) {
                 if (this.nodes[i].dist < this.nodes[i / 2].dist) {
