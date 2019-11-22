@@ -21,6 +21,12 @@
 			) t
 		) t2
 		WHERE t2.row_num < 2
+
+- 统计一个人在一个商店一天内的所有消费次数
+- 使用row_number()函数，根据商店进行partition，根据cnt进行逆序排序，得到排序后的每个商店每个人的消费次数
+- 根据where选取消费前三的人
+
+
 ### 1.4 使用函数
 row_number() over (partition by A order by B) xxx
 
