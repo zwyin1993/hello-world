@@ -5,14 +5,19 @@
 ### 1.2 输入数据格式
 	shop \t name \t date
 ### 1.3 HQL实现
-		SELECT *
+		SELECT 
+			*
 		FROM (
-			SELECT t.shop, t.date, t.name, t.cnt, row_number() OVER (PARTITION BY t.shop ORDER BY t.cnt DESC) AS 
-				row_num
+			SELECT 
+				t.shop, t.date, t.name, t.cnt, 
+				row_number() OVER (PARTITION BY t.shop ORDER BY t.cnt DESC) AS row_num
 			FROM (
-				SELECT shop, name, date, COUNT(*) AS cnt
-				FROM shopping
-				GROUP BY shop, name, date
+				SELECT 
+					shop, name, date, COUNT(*) AS cnt
+				FROM 
+					shopping
+				GROUP BY 
+					shop, name, date
 			) t
 		) t2
 		WHERE t2.row_num < 2
@@ -35,12 +40,16 @@ row_number() over (partition by A order by B) xxx
 
 ***SQL***
 
-		SELECT t.shop, t.date, t.name, t.cnt, 
+		SELECT 
+			t.shop, t.date, t.name, t.cnt, 
 			row_number() OVER (PARTITION BY t.shop ORDER BY t.cnt DESC) AS row_num
 		FROM (
-			SELECT shop, name, date, COUNT(*) AS cnt
-			FROM shopping
-			GROUP BY shop, name, date
+			SELECT 
+				shop, name, date, COUNT(*) AS cnt
+			FROM 
+				shopping
+			GROUP BY 
+				shop, name, date
 		) t	
 
 ***输出***
