@@ -69,3 +69,39 @@ Pair Rdd<key, value>
 - numPartitions : Int：返回创建出来的分区数
 - getPartition(key : Any) : Int：返回分区编号
 - equals()：判断两个RDD分区是否相同
+
+--- 
+
+# Spark任务执行流程
+名词解释
+
+	Driver：负责任务的调度
+	Executor：负责执行任务
+	master：集群主节点，负责分配资源
+	worker：集群数据节点，提供任务执行的环境
+	Application：待执行的任务
+	DAGSchedule：根据宽窄依赖形成的算子执行stage
+	TaskSchedule：一个stage包括多个task
+
+## Spark on Standalone
+
+> 在独立的机器执行
+
+1. 初始化SparkContext；主要包括DAGSchedule和TaskSchedule
+2. Driver将Application的注册信息传给master，master根据注册信息在worker启动Executor
+3. Executor会创建线程池，并将启动的Executor反向注册给Driver
+4. DAGSchedule将不同的stage传给TaskSchedule
+5. TaskSchedule将task分发给Executor执行
+6. 任务执行结束，SparkContext向master注销
+
+疑问：
+- DAGSchedule和TaskSchedule是什么？
+- 怎么生成DAGSchedule？
+- 怎么生成TaskSchedule？
+
+## Spark on yarn-client
+
+> 通过yarn集群外的一台机器向yarn提交任务
+
+1. client向ResourceManager申请启动ApplicationMaster，并初始化SparkContext
+2. ResourceManager启动
