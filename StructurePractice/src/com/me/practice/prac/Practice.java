@@ -5,7 +5,7 @@ public class Practice {
         String[][] input = new String[][]{{"A", "B"}, {"B", "C"}, {"C", "D"}, {"A", "G"}, {"B", "F"}, {"E", "F"}};
         Practice practice = new Practice();
 //        practice.findLines(input, "B");
-        String s = practice.longestPalindrome1("abba");
+        int s = practice.myAtoi("\"-2147483649\"");
         System.out.println(s);
     }
 
@@ -61,6 +61,14 @@ public class Practice {
         return maxLength;
     }
 
+    /**
+     * 查找最长子回文.
+     * 1.制定子回文的窗口，左右边界
+     * 2.判断窗口内的序列是否是子回文（根据回文的特点，判断奇数情况和偶数情况）
+     *
+     * @param s 待查找的字符串
+     * @return 最长子回文
+     */
     public String longestPalindrome(String s) {
         // 回文类似：上海自来水来自海上
         int startIndex = 0;
@@ -175,5 +183,64 @@ public class Practice {
             }
         }
         return s.substring(startIndex, endIndex + 1);
+    }
+
+    /**
+     * z字形变换.
+     * Z行字符串的特点，每个周期内有numRows + （numRows - 2）个元素；周期指没有最后一行
+     *
+     * @param s       给定的字符串
+     * @param numRows 行数
+     * @return Z字形字符串
+     */
+    public String convert(String s, int numRows) {
+        return "";
+    }
+
+    /**
+     * 字符串转int.
+     *
+     * @param str
+     * @return
+     */
+    public int myAtoi(String str) {
+        int flag = 0; // 符号位
+        int tmpRes = 0;
+        boolean begin = false;
+        for (char ch : str.toCharArray()) {
+            int charAsc = (int)ch;
+            if (!begin && (charAsc == 32 || charAsc == 34)) { // 过滤起始为空的和"的字符串
+                continue;
+            }
+            begin = true;
+            // - 号处理，首位的话，置为-1，否则过滤
+            if (charAsc == 45 && flag == 0) {
+                flag = -1;
+                continue;
+            }
+            // + 号处理，首位的话，置为1，否则过滤
+            if (charAsc == 43 && flag == 0) {
+                flag = 1;
+                continue;
+            }
+            // 过滤非 - 和非数字字符
+            if (charAsc < 48 || charAsc > 57) {
+                break;
+            }
+            int pom = Integer.parseInt(String.valueOf(ch));
+            if (flag == 0) {
+                flag = 1;
+                tmpRes = pom;
+                continue;
+            }
+            if (flag * tmpRes > Integer.MAX_VALUE / 10 || (flag * tmpRes == Integer.MAX_VALUE / 10 && pom > 7)) {
+                return Integer.MAX_VALUE;
+            }
+            if (flag * tmpRes < Integer.MIN_VALUE / 10 || (flag * tmpRes == Integer.MIN_VALUE / 10 && pom > 8)) {
+                return Integer.MIN_VALUE;
+            }
+            tmpRes = 10 * tmpRes + pom;
+        }
+        return flag * tmpRes;
     }
 }
