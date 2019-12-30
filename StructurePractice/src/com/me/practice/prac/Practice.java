@@ -1,11 +1,13 @@
 package com.me.practice.prac;
 
+import java.util.*;
+
 public class Practice {
     public static void main(String[] args) {
         String[][] input = new String[][]{{"A", "B"}, {"B", "C"}, {"C", "D"}, {"A", "G"}, {"B", "F"}, {"E", "F"}};
         Practice practice = new Practice();
 //        practice.findLines(input, "B");
-        int s = practice.myAtoi("\"-2147483649\"");
+        int s = practice.romanToInt("MCMXCIV");
         System.out.println(s);
     }
 
@@ -242,5 +244,82 @@ public class Practice {
             tmpRes = 10 * tmpRes + pom;
         }
         return flag * tmpRes;
+    }
+
+    public static class Section {
+        private int left;
+        private int right;
+
+        public Section(int left, int right) {
+            this.left = left;
+            this.right = right;
+        }
+
+        public int getLeft() {
+            return left;
+        }
+
+        public int getRight() {
+            return right;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Section section = (Section) o;
+            return left == section.left &&
+                    right == section.right;
+        }
+
+        @Override
+        public int hashCode() {
+
+            return Objects.hash(left, right);
+        }
+
+        @Override
+        public String toString() {
+            return String.format("[%s, %s]", this.left, this.right);
+        }
+    }
+
+    public int romanToInt(String s) {
+        // init
+        Map<String, Integer> map = new HashMap<>();
+        map.put("I", 1);
+        map.put("IV", 4);
+        map.put("V", 5);
+        map.put("IX", 9);
+        map.put("X", 10);
+        map.put("XL", 40);
+        map.put("L", 50);
+        map.put("XC", 90);
+        map.put("C", 100);
+        map.put("CD", 400);
+        map.put("D", 500);
+        map.put("CM", 900);
+        map.put("M", 1000);
+
+        // build
+        int result = 0;
+        String pre = "";
+        String curr = "";
+        for (int i = s.length() - 1; i >= 0; i--) {
+            curr = String.valueOf(s.charAt(i));
+            if (pre.isEmpty()) {
+                result = result + map.get(curr);
+                pre = curr;
+                continue;
+            }
+            if (map.get(curr) < map.get(pre)) { // 4和9的情况
+                result = result - map.get(pre);
+                result = result + map.get(curr + pre);
+            } else {
+                result = result + map.get(curr);
+            }
+            pre = curr;
+        }
+        return result;
     }
 }
