@@ -8,8 +8,11 @@ public class Practice {
         Practice practice = new Practice();
 //        practice.findLines(input, "B");
         int s = practice.romanToInt("MCMXCIV");
+        char ss = ' ';
         System.out.println(s);
     }
+
+
 
     /**
      * 任务依赖查找.
