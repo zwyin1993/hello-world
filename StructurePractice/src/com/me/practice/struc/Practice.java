@@ -11,10 +11,30 @@ import java.util.concurrent.*;
 public class Practice {
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
-
+        Practice practice = new Practice();
+        int[] input = new int[]{2, 0, 0};
+        System.out.println(practice.canJump(input));
     }
 
+    public boolean canJump(int[] nums) {
+        return nums.length == 1 || calJumps(nums, 0);
+    }
 
+    private boolean calJumps(int[] nums, int i) {
+        if (nums[i] == 0 && i < nums.length - 1) {
+            return false;
+        }
+        // 计算当前节点是否满足
+        for (int j = 1; j <= nums[i]; j++) {
+            if (i + j >= nums.length - 1) {
+                return true;
+            }
+            if (calJumps(nums, i + j)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     private static final String LINE_FIELD = "-";
     private static final String COL_FIELD = "|";

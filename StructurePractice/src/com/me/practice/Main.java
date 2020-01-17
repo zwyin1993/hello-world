@@ -1,6 +1,12 @@
 package com.me.practice;
 
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * .
@@ -9,13 +15,17 @@ import java.util.LinkedList;
  */
 public class Main {
     public static void main(String[] args) {
-        Main main = new Main(6);
-        main.addEdge(1, 2);
-        main.addEdge(1, 3);
-        main.addEdge(4, 2);
-        main.addEdge(4, 3);
-        main.addEdge(2, 5);
-        main.topoSortByDFS();
+        Stream<String> stream = Stream.of("name", "love", "zhsangsan");
+        stream.map(s -> s + ", ");
+//        System.out.println(res);
+//        List<String> list = stream.collect(Collectors.toList());
+//        list.forEach(s -> System.out.println(s));
+//        System.out.println("-----");
+//        Set<String> set = stream.collect(Collectors.toSet());
+//        set.forEach(System.out::println);
+//        System.out.println("--------");
+//        Map<String, Integer> map = stream.collect(Collectors.toMap(s -> s, String::length));
+//        map.forEach((k, v) -> System.out.println("key: " + k + "; length:" + v));
     }
 
     private int v; // 顶点的个数

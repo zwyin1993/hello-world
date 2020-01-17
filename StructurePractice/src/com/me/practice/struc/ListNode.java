@@ -17,19 +17,50 @@ public class ListNode {
     }
 
     public static void main(String[] args) {
-        ListNode node1 = new ListNode(1);
+        ListNode node1 = new ListNode(4);
         node1.next = new ListNode(2);
-        node1.next.next = new ListNode(3);
-        node1.next.next.next = new ListNode(4);
-        node1.next.next.next.next = new ListNode(5);
-        node1.next.next.next.next.next = new ListNode(6);
-        node1.next.next.next.next.next.next = new ListNode(7);
-        node1.next.next.next.next.next.next.next = new ListNode(8);
-        node1.next.next.next.next.next.next.next.next = new ListNode(9);
-        node1.next.next.next.next.next.next.next.next.next = new ListNode(10);
+        node1.next.next = new ListNode(1);
+        node1.next.next.next = new ListNode(3);
 
-        ListNode result = node1.removeNthFromEnd(node1, 7);
+
+        ListNode result = node1.insertionSortList(node1);
         System.out.println(result);
+    }
+
+    public ListNode insertionSortList(ListNode head) {
+        if (null == head.next) {
+            return head;
+        }
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode pre = head; // 指向current的前一个节点的前一个节点
+        ListNode curr = head.next;
+        while (null != curr) {
+            ListNode comparePre = dummy; // 依次从头开始比较curr
+            while (true) { // 插入curr
+                if (comparePre.next == pre) {  // XX,comparePre,pre,curr的情况
+                    if (pre.val > curr.val) {
+                        pre.next = curr.next;
+                        curr.next = comparePre.next;
+                        comparePre.next = curr;
+                        curr = pre.next;
+                    } else {
+                        pre = pre.next;
+                        curr = curr.next;
+                    }
+                    break;
+                }
+                if (comparePre.next.val >= curr.val) {
+                    pre.next = curr.next;
+                    curr.next = comparePre.next;
+                    comparePre.next = curr;
+                    curr = pre.next;
+                    break;
+                }
+                comparePre = comparePre.next;
+            }
+        }
+        return dummy.next;
     }
 
     public ListNode removeNthFromEnd(ListNode head, int n) {
