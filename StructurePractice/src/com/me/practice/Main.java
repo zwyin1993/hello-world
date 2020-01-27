@@ -1,12 +1,6 @@
 package com.me.practice;
 
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * .
@@ -15,17 +9,66 @@ import java.util.stream.Stream;
  */
 public class Main {
     public static void main(String[] args) {
-        Stream<String> stream = Stream.of("name", "love", "zhsangsan");
-        stream.map(s -> s + ", ");
-//        System.out.println(res);
-//        List<String> list = stream.collect(Collectors.toList());
-//        list.forEach(s -> System.out.println(s));
-//        System.out.println("-----");
-//        Set<String> set = stream.collect(Collectors.toSet());
-//        set.forEach(System.out::println);
-//        System.out.println("--------");
-//        Map<String, Integer> map = stream.collect(Collectors.toMap(s -> s, String::length));
-//        map.forEach((k, v) -> System.out.println("key: " + k + "; length:" + v));
+        char[][] input = new char[][]{
+                {'.', '4', '.', '.', '7', '.', '.', '.', '.'},
+                {'.', '.', '4', '1', '9', '5', '.', '.', '.'},
+                {'.', '9', '8', '7', '.', '.', '.', '6', '.'},
+                {'8', '.', '.', '.', '6', '.', '.', '.', '3'},
+                {'4', '.', '.', '8', '.', '3', '.', '.', '1'},
+                {'7', '.', '.', '.', '2', '.', '.', '.', '6'},
+                {'.', '6', '.', '.', '.', '.', '2', '8', '.'},
+                {'.', '.', '.', '4', '1', '9', '.', '.', '5'},
+                {'.', '.', '.', '.', '8', '.', '.', '7', '9'}};
+        System.out.println(isValidSudoku(input));
+    }
+
+    public static boolean isValidSudoku(char[][] board) {
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 9; col++) {
+                // 比较3*3是否满足
+                if ((row + 1) % 3 == 0 && (col + 1) % 3 == 0) {
+                    int newRow = row / 3;
+                    int newCol = col / 3;
+                    boolean[] status = new boolean[9]; // 下标表示第几位数，true表示3*3的九宫格内已经存在该数
+                    for (int i = newRow * 3; i <= row; i++) {
+                        for (int j = newCol * 3; j <= col; j++) {
+                            if (board[i][j] == '.') {
+                                continue;
+                            }
+                            int curr = board[i][j] - '1';
+                            if (status[curr]) { // 如果已经存在
+                                return false;
+                            } else {
+                                status[curr] = true;
+                            }
+                        }
+                    }
+                }
+
+                if (board[row][col] == '.') {
+                    continue;
+                }
+                if (!isOk(board, row, col)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public static boolean isOk(char[][] board, int row, int col) {
+        for (int i = 0; i < row; i++) {
+            if (board[i][col] == board[row][col]) {
+                return false;
+            }
+        }
+        for (int i = 0; i < col; i++) {
+            if (board[row][i] == board[row][col]) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private int v; // 顶点的个数
