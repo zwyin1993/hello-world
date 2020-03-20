@@ -1,6 +1,6 @@
 package com.me.practice;
 
-import java.util.LinkedList;
+import java.util.*;
 
 /**
  * .
@@ -9,17 +9,119 @@ import java.util.LinkedList;
  */
 public class Main {
     public static void main(String[] args) {
-        char[][] input = new char[][]{
-                {'.', '4', '.', '.', '7', '.', '.', '.', '.'},
-                {'.', '.', '4', '1', '9', '5', '.', '.', '.'},
-                {'.', '9', '8', '7', '.', '.', '.', '6', '.'},
-                {'8', '.', '.', '.', '6', '.', '.', '.', '3'},
-                {'4', '.', '.', '8', '.', '3', '.', '.', '1'},
-                {'7', '.', '.', '.', '2', '.', '.', '.', '6'},
-                {'.', '6', '.', '.', '.', '.', '2', '8', '.'},
-                {'.', '.', '.', '4', '1', '9', '.', '.', '5'},
-                {'.', '.', '.', '.', '8', '.', '.', '7', '9'}};
-        System.out.println(isValidSudoku(input));
+        int[] arr = {0,1,1,1,4,5,3,7,7,8,10,2,7,8,0,5,2,16,12,1,19,15,5,18,2,2,22,15,8,22,17,6,22,6,22,26,32,8,10,11,2,26,9,12,9,7,28,33,20,7,2,17,44,3,52,27,2,23,19,56,56,58,36,31,1,19,19,6,65,49,27,63,29,1,69,47,56,61,40,43,10,71,60,66,42,44,10,12,83,69,73,2,65,93,92,47,35,39,13,75};
+        int[] result = getLeastNumbers(arr, 75);
+        System.out.println(Arrays.toString(result));
+    }
+
+    public static int[] getLeastNumbers(int[] arr, int k) {
+        if (k < 1) {
+            return new int[0];
+        }
+        // insert sort
+        int[] result = new int[k];
+        int nextIndex = 1;
+        result[0] = arr[0];
+        for (int i = 1; i < arr.length; i++) {
+            if (nextIndex < k) { // result未满
+                result[nextIndex] = arr[i];
+                insertSort(result, nextIndex);
+                nextIndex++;
+            } else { // result已满
+                if (arr[i] < result[k - 1]) {
+                    result[k - 1] = arr[i];
+                    insertSort(result, k - 1);
+                }
+            }
+        }
+        return result;
+    }
+
+    public static void insertSort(int[] arr, int lastIndex) {
+        for (int i = lastIndex; i > 0; i--) {
+            if (arr[i] < arr[i - 1]) {
+                int tmp = arr[i];
+                arr[i] = arr[i - 1];
+                arr[i - 1] = tmp;
+            }
+        }
+    }
+
+    public static List<Integer[]> findContinuousSequence1(int target) {
+        List<Integer[]> result = new ArrayList<>();
+        // 偶数不会存在连续的两数之和为target
+        if (target < 3) {
+            return Collections.emptyList();
+        }
+        if (target == 3) {
+            Integer[] tt = {1, 2};
+            result.add(tt);
+            return result;
+        }
+        int start = 1;
+        // 从头开始遍历，计算所有的可能性
+        for (; start <= target / 2; start++) {
+            int end = start + 1; // 记录下一个数字
+            int sum = start; // 计算当前序列的和
+            while(end <= target / 2 + 1) {
+                sum += end;
+                end++;
+                if (sum >= target) {
+                    break;
+                }
+            }
+            if (sum == target) {
+                Integer[] tmp = new Integer[end - start];
+                int val = start;
+                for (int i = 0; i < end - start; i++) {
+                    tmp[i] = val++;
+                }
+                result.add(tmp);
+            }
+        }
+        return result;
+    }
+
+    public static int[][] findContinuousSequence(int target) {
+        List<Integer[]> result = new ArrayList<>();
+        // 偶数不会存在连续的两数之和为target
+        if (target < 3) {
+            return new int[0][0];
+        }
+        if (target == 3) {
+            return new int[][]{{1, 2}};
+        }
+        int start = 1;
+        // 从头开始遍历，计算所有的可能性
+        for (; start <= target / 2; start++) {
+            int end = start + 1; // 记录下一个数字
+            int sum = start; // 计算当前序列的和
+            while(end <= target / 2 + 1) {
+                sum += end;
+                end++;
+                if (sum >= target) {
+                    break;
+                }
+            }
+            if (sum == target) {
+                Integer[] tmp = new Integer[end - start];
+                int val = start;
+                for (int i = 0; i < end - start; i++) {
+                    tmp[i] = val++;
+                }
+                result.add(tmp);
+            }
+        }
+
+        int[][] tmp = new int[result.size()][];
+        for (int i = 0; i < result.size(); i++) {
+            int[] ii = new int[result.get(i).length];
+            for (int j = 0; j < ii.length; j++) {
+                ii[j] = result.get(i)[j];
+            }
+            tmp[i] = ii;
+        }
+        return tmp;
     }
 
     public static boolean isValidSudoku(char[][] board) {

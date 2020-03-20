@@ -166,7 +166,7 @@ public class Sort {
      */
     private static int partition(int[] arr, int start, int end) {
         int point = arr[end];
-        int i = start;
+        int i = start; // i指向第一个比point大的值的下标
         for (int j = start; j <= end; j++) {
             if (arr[j] < point) {
                 int tmp = arr[j];
