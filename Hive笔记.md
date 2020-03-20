@@ -6,22 +6,24 @@
 ### 1.2 输入数据格式
 	shop \t name \t date
 ### 1.3 HQL实现
+```sql
+	SELECT 
+		*
+	FROM (
 		SELECT 
-			*
+			t.shop, t.date, t.name, t.cnt, 
+			row_number() OVER (PARTITION BY t.shop ORDER BY t.cnt DESC) AS row_num
 		FROM (
 			SELECT 
-				t.shop, t.date, t.name, t.cnt, 
-				row_number() OVER (PARTITION BY t.shop ORDER BY t.cnt DESC) AS row_num
-			FROM (
-				SELECT 
-					shop, name, date, COUNT(*) AS cnt
-				FROM 
-					shopping
-				GROUP BY 
-					shop, name, date
-			) t
-		) t2
-		WHERE t2.row_num < 2
+				shop, name, date, COUNT(*) AS cnt
+			FROM 
+				shopping
+			GROUP BY 
+				shop, name, date
+		) t
+	) t2
+	WHERE t2.row_num < 2
+```
 
 - 统计一个人在一个商店一天内的所有消费次数
 - 使用row_number()函数，根据商店进行partition，根据cnt进行逆序排序，得到排序后的每个商店每个人的消费次数
@@ -118,7 +120,7 @@ row_number() over (partition by A order by B) xxx
 	便利蜂 张三 3
 	便利蜂 李四 3
 	便利蜂 李四 3
-	
+
 ## 2.3 其他窗口函数
 
 **排序**
@@ -134,7 +136,7 @@ row_number() over (partition by A order by B) xxx
 	金虎便利 张三 20191101 1
 	金虎便利 李四 20191101 2
 	金虎便利 王五 20191101 1
-	
+
 
 ***SQL***
 ```sql
@@ -150,4 +152,4 @@ shop   | name  |  date  | cnt  | row_number | rank | dense_rank
 金虎便利 | 张三 | 20191101 | 1 | 1 | 1 | 1
 金虎便利 | 王五 | 20191101 | 1 | 2 | 1 | 1
 金虎便利 | 李四 | 20191101 | 2 | 3 | 3 | 2
- 
+
