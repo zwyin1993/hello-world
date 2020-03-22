@@ -1,7 +1,6 @@
 package com.me.practice.struc;
 
 import java.util.*;
-import java.util.concurrent.*;
 
 /**
  * .
@@ -55,8 +54,57 @@ public class Practice {
     }
 
     public static void main(String[] args) {
-        System.out.println((new Practice()).majorityElement(new int[]{2, 2, 3, 3}));
+        System.out.println((new Practice()).jumps(new int[]{1, 2, 2, 2, 1, 2, 1}));
 
+    }
+
+    /**
+     * 跳跃问题，可能情况.
+     *
+     * @param arr 数组
+     * @return 可能情况
+     */
+    public int jumps(int[] arr) {
+        int[] result = new int[arr.length];
+        result[arr.length - 1] = 1;
+        for (int i = arr.length - 2; i >= 0; i--) {
+            result[i] = 0;
+            if (arr[i] == 0) {
+                continue;
+            }
+            for (int j = 1; j <= arr[i]; j++) { // j表示每次跳跃的步数，当前的节点可能行=每次跳跃的可能性相加
+                if (i + j > arr.length - 1) {
+                    break;
+                }
+                result[i] += result[i + j];
+            }
+        }
+        return result[0];
+    }
+
+    /**
+     * leetcode 45 最少跳跃次数，使用贪心算法
+     *
+     * @param nums 跳跃数
+     * @return 最少跳跃次数
+     */
+    public int leastJump(int[] nums) {
+        int end = 0;
+        int maxPosition = 0;
+        int steps = 0;
+        for (int i = 0; i < nums.length - 1; i++) {
+            //找能跳的最远的
+            maxPosition = Math.max(maxPosition, nums[i] + i);
+            if (i == end) { //遇到边界，就更新边界，并且步数加一
+                if (end == maxPosition) { // 下个边界==上个边界，永远到不了最后；但是step是2
+                    return 0;
+                }
+                end = maxPosition;
+                steps++;
+            }
+        }
+        return steps;
+//        return maxPosition >= nums.length ? steps : 0;
     }
 
     public int majorityElement(int[] nums) { // 最多数元素
@@ -113,7 +161,7 @@ public class Practice {
         int leftDepth = null == root.left ? 0 : getDepth(root.left, 1);
         int rightDepth = null == root.right ? 0 : getDepth(root.right, 1);
         System.out.println("left:" + leftDepth + "; right:" + rightDepth);
-        return leftDepth + rightDepth > this.max ? leftDepth + rightDepth : this.max;
+        return Math.max(leftDepth + rightDepth, this.max);
     }
 
     private int max = -1;
@@ -126,7 +174,7 @@ public class Practice {
         int leftDepth = null == node.left ? currDepth : getDepth(node.left, currDepth + 1);
         int rightDepth = null == node.right ? currDepth : getDepth(node.right, currDepth + 1);
         int currentDiameter = leftDepth + rightDepth - 2 * currDepth;
-        this.max = this.max < currentDiameter ? currentDiameter : this.max;
+        this.max = Math.max(this.max, currentDiameter);
         return Math.max(leftDepth, rightDepth);
     }
 
