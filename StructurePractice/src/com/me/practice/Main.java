@@ -9,9 +9,40 @@ import java.util.*;
  */
 public class Main {
     public static void main(String[] args) {
-        int[] arr = {0,1,1,1,4,5,3,7,7,8,10,2,7,8,0,5,2,16,12,1,19,15,5,18,2,2,22,15,8,22,17,6,22,6,22,26,32,8,10,11,2,26,9,12,9,7,28,33,20,7,2,17,44,3,52,27,2,23,19,56,56,58,36,31,1,19,19,6,65,49,27,63,29,1,69,47,56,61,40,43,10,71,60,66,42,44,10,12,83,69,73,2,65,93,92,47,35,39,13,75};
-        int[] result = getLeastNumbers(arr, 75);
-        System.out.println(Arrays.toString(result));
+        System.out.println(0 & 1);
+        String seq = "(()())";
+        int[] ans = new int[seq.length()];
+        int idx = 0;
+        for (char c : seq.toCharArray()) {
+            // 左括号要么是A，要么是B，只要将左括号按奇偶分配给A和B即可
+            // 这里将奇数的括号分配给B，偶数的括号分配给A
+            // 左括号是奇数下标，对应的右括号就是偶数下标
+//            ans[idx] = c == '(' ? idx & 1 : ((idx + 1) & 1);
+//            idx++;
+            ans[idx] = idx;
+            idx++;
+        }
+        System.out.println(Arrays.toString(ans));
+    }
+
+    /**
+     * leetcode有效括号
+     *
+     * @param seq
+     * @return
+     */
+    public int[] maxDepthAfterSplit(String seq) {
+        int[] ans = new int[seq.length()];
+        int idx = 0;
+        for (char c : seq.toCharArray()) {
+            // 左括号要么是A，要么是B，只要将左括号按奇偶分配给A和B即可
+            // 这里将奇数的左括号分配给B，偶数的括号右分配给A
+            // 左括号是奇数下标，对应的右括号就是偶数下标
+            ans[idx++] = c == '(' ? idx & 1 : ((idx + 1) & 1);
+            // 这里ans[idx++],当这步结束后idx已经变为1，所以后面的引用idx就是1，这就解释了为什么和注释不符，
+            // 按照这里的写法，将偶数的左括号赋给了B，奇数的左括号赋给了A
+        }
+        return ans;
     }
 
     public static int[] getLeastNumbers(int[] arr, int k) {
@@ -63,7 +94,7 @@ public class Main {
         for (; start <= target / 2; start++) {
             int end = start + 1; // 记录下一个数字
             int sum = start; // 计算当前序列的和
-            while(end <= target / 2 + 1) {
+            while (end <= target / 2 + 1) {
                 sum += end;
                 end++;
                 if (sum >= target) {
@@ -96,7 +127,7 @@ public class Main {
         for (; start <= target / 2; start++) {
             int end = start + 1; // 记录下一个数字
             int sum = start; // 计算当前序列的和
-            while(end <= target / 2 + 1) {
+            while (end <= target / 2 + 1) {
                 sum += end;
                 end++;
                 if (sum >= target) {
